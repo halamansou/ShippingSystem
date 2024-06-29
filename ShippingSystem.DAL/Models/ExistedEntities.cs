@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ShippingSystem.DAL.Models
 {
-    public class AccessedEntity : IEntity
+    public class ExistedEntities : IEntity
     {
         [Key]
         public int Id { get; set; }
@@ -17,6 +17,11 @@ namespace ShippingSystem.DAL.Models
         public string Name { get; set; } = string.Empty;
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
+
+
+
+        public virtual List<Permission>? Permissions { get; set; } = new List<Permission>();
+
 
     }
 }

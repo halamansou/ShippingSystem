@@ -1,8 +1,10 @@
 
 using Microsoft.EntityFrameworkCore;
 using ShippingSysem.BLL.Services;
+using ShippingSystem.DAL.Interfaces;
 using ShippingSystem.DAL.Interfaces.Base;
 using ShippingSystem.DAL.Models;
+using ShippingSystem.DAL.Repositories;
 using ShippingSystem.DAL.Repositories.Base;
 
 namespace ShippingSystem.PL
@@ -68,12 +70,25 @@ namespace ShippingSystem.PL
 
             //Register Emp Services 
             builder.Services.AddScoped<IGenericRepository<Account>, GenericRepository<Account>>();
-            builder.Services.AddScoped<IGenericRepository<AccessedEntity>, GenericRepository<AccessedEntity>>();
+            builder.Services.AddScoped<IGenericRepository<ExistedEntities>, GenericRepository<ExistedEntities>>();
+
+            //Delivery Accounts
+            builder.Services.AddScoped<IGenericRepository<DeliveryAccount>, GenericRepository<DeliveryAccount>>();
+
+            //builder.Services.AddScoped<IGenericRepository<Permission_User_Entities>, GenericRepository<Permission_User_Entities>>();
             builder.Services.AddScoped<EmployeeService>();
             builder.Services.AddScoped<PermissionsService>();
 
+            // Delivery Accounts Service
+            builder.Services.AddScoped< DeliveryAccountService>();
+
+
             //Register Order Service
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
             builder.Services.AddScoped<OrderService>();
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -125,88 +125,6 @@ namespace ShippingSystem.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ShippingSystem.DAL.Models.AccessedEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AccessedEntity");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsDeleted = false,
-                            Name = "Settings"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsDeleted = false,
-                            Name = "Branches"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsDeleted = false,
-                            Name = "Employees"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsDeleted = false,
-                            Name = "Merchants"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IsDeleted = false,
-                            Name = "Deliveries"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            IsDeleted = false,
-                            Name = "Governorates"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            IsDeleted = false,
-                            Name = "Cities"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            IsDeleted = false,
-                            Name = "Orders"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            IsDeleted = false,
-                            Name = "Financials"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            IsDeleted = false,
-                            Name = "Reports"
-                        });
-                });
-
             modelBuilder.Entity("ShippingSystem.DAL.Models.Account", b =>
                 {
                     b.Property<int>("Id")
@@ -299,6 +217,25 @@ namespace ShippingSystem.DAL.Migrations
                     b.HasIndex("RoleID");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            Address = "123 New Street",
+                            ConcurrencyStamp = "ec5de543-b40c-40dd-a330-bc6b134c86af",
+                            Email = "newuser@example.com",
+                            EmailConfirmed = false,
+                            IsDeleted = false,
+                            LockoutEnabled = false,
+                            Name = "New User",
+                            PasswordHash = "AQAAAAIAAYagAAAAELEA2SGvXSYp4Do4D7Ug3oMoY4wXytB9qtOc2jk+uCCLoJ2dO++b3HQFGS+q+P5sEQ==",
+                            PhoneNumberConfirmed = false,
+                            Status = true,
+                            TwoFactorEnabled = false,
+                            UserName = "newuser"
+                        });
                 });
 
             modelBuilder.Entity("ShippingSystem.DAL.Models.Branch", b =>
@@ -447,6 +384,88 @@ namespace ShippingSystem.DAL.Migrations
                     b.HasIndex("RoleID");
 
                     b.ToTable("DeliveryAccounts", (string)null);
+                });
+
+            modelBuilder.Entity("ShippingSystem.DAL.Models.ExistedEntities", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExistedEntities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            Name = "Settings"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDeleted = false,
+                            Name = "Branches"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDeleted = false,
+                            Name = "Employees"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsDeleted = false,
+                            Name = "Merchants"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsDeleted = false,
+                            Name = "Deliveries"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsDeleted = false,
+                            Name = "Governorates"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IsDeleted = false,
+                            Name = "Cities"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            IsDeleted = false,
+                            Name = "Orders"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            IsDeleted = false,
+                            Name = "Financials"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            IsDeleted = false,
+                            Name = "Reports"
+                        });
                 });
 
             modelBuilder.Entity("ShippingSystem.DAL.Models.Government", b =>
@@ -718,14 +737,32 @@ namespace ShippingSystem.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("CanCreate")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanRead")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanWrite")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("EntityId");
 
                     b.ToTable("Permission");
 
@@ -733,47 +770,25 @@ namespace ShippingSystem.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            IsDeleted = false,
-                            Name = "Create"
+                            AccountId = 1,
+                            CanCreate = true,
+                            CanDelete = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            EntityId = 1,
+                            IsDeleted = false
                         },
                         new
                         {
                             Id = 2,
-                            IsDeleted = false,
-                            Name = "Update"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsDeleted = false,
-                            Name = "Delete"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsDeleted = false,
-                            Name = "Read"
+                            AccountId = 1,
+                            CanCreate = false,
+                            CanDelete = false,
+                            CanRead = true,
+                            CanWrite = false,
+                            EntityId = 2,
+                            IsDeleted = false
                         });
-                });
-
-            modelBuilder.Entity("ShippingSystem.DAL.Models.Permission_User_Entities", b =>
-                {
-                    b.Property<int>("user_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("permission_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("entity_id")
-                        .HasColumnType("int");
-
-                    b.HasKey("user_id", "permission_id", "entity_id");
-
-                    b.HasIndex("entity_id");
-
-                    b.HasIndex("permission_id");
-
-                    b.ToTable("Permission_User_Entities");
                 });
 
             modelBuilder.Entity("ShippingSystem.DAL.Models.Product", b =>
@@ -1082,31 +1097,23 @@ namespace ShippingSystem.DAL.Migrations
                     b.Navigation("paymentType");
                 });
 
-            modelBuilder.Entity("ShippingSystem.DAL.Models.Permission_User_Entities", b =>
+            modelBuilder.Entity("ShippingSystem.DAL.Models.Permission", b =>
                 {
-                    b.HasOne("ShippingSystem.DAL.Models.AccessedEntity", "entity")
-                        .WithMany()
-                        .HasForeignKey("entity_id")
+                    b.HasOne("ShippingSystem.DAL.Models.Account", "Account")
+                        .WithMany("Permissions")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShippingSystem.DAL.Models.Permission", "permission")
-                        .WithMany()
-                        .HasForeignKey("permission_id")
+                    b.HasOne("ShippingSystem.DAL.Models.ExistedEntities", "Entity")
+                        .WithMany("Permissions")
+                        .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShippingSystem.DAL.Models.Account", "account")
-                        .WithMany()
-                        .HasForeignKey("user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Account");
 
-                    b.Navigation("account");
-
-                    b.Navigation("entity");
-
-                    b.Navigation("permission");
+                    b.Navigation("Entity");
                 });
 
             modelBuilder.Entity("ShippingSystem.DAL.Models.Product", b =>
@@ -1123,6 +1130,8 @@ namespace ShippingSystem.DAL.Migrations
             modelBuilder.Entity("ShippingSystem.DAL.Models.Account", b =>
                 {
                     b.Navigation("Orders");
+
+                    b.Navigation("Permissions");
                 });
 
             modelBuilder.Entity("ShippingSystem.DAL.Models.Branch", b =>
@@ -1133,6 +1142,11 @@ namespace ShippingSystem.DAL.Migrations
             modelBuilder.Entity("ShippingSystem.DAL.Models.DeliveryAccount", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("ShippingSystem.DAL.Models.ExistedEntities", b =>
+                {
+                    b.Navigation("Permissions");
                 });
 
             modelBuilder.Entity("ShippingSystem.DAL.Models.Government", b =>

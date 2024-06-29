@@ -32,7 +32,7 @@ namespace ShippingSysem.BLL.Services
         //Mpping The Orders return from The Database with Pagination and using Status as filteration
         public async Task<List<OrederReadDTO>> GetAllFilterdOrders(int page, int pageSize, string status = "")
         {
-            var orders = await repository.GetAllFilterdOrdersAsync(page,pageSize,status);
+            var orders = await repository.GetAllFilterdOrdersAsync(page, pageSize, status);
 
             var ordersDtos = await MappingorderDTOs(orders);
 

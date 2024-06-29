@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,8 @@ namespace ShippingSystem.DAL.Models
         public DbSet<Account> Accounts;
         public DbSet<Role> Roles;
         public DbSet<Permission> Permissions;
-        public DbSet<AccessedEntity> Entities;
-        public DbSet<Permission_User_Entities> Permissions_User_Entities;
+        public DbSet<ExistedEntities> Entities;
+        //public DbSet<AccountPermissions> Permissions_Users_Entities;
         public DbSet<Branch> Branches;
         public DbSet<City> Cities;
         public DbSet<Government> Governments;
@@ -41,8 +42,8 @@ namespace ShippingSystem.DAL.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //builder.Entity<OrderDetails>().HasKey("OrderId", "ProductId");
-            builder.Entity<Permission_User_Entities>().HasKey("user_id", "permission_id", "entity_id");
+
+
 
 
             builder.Entity<Account>()
@@ -56,13 +57,7 @@ namespace ShippingSystem.DAL.Models
 
 
             //add data 
-            builder.Entity<Permission>(entity => entity.HasData(
 
-                new Permission { Id = 1, Name = "Create" },
-                new Permission { Id = 2, Name = "Update" },
-                new Permission { Id = 3, Name = "Delete" },
-                new Permission { Id = 4, Name = "Read" }
-                ));
 
             builder.Entity<PaymentType>(entity => entity.HasData(
                 new PaymentType { Id = 1, Name = "Cash" },
@@ -85,18 +80,130 @@ namespace ShippingSystem.DAL.Models
               new Role { Id = 4, Name = "Admin" }
               ));
 
-            builder.Entity<AccessedEntity>(entity => entity.HasData(
-            new AccessedEntity { Id = 1, Name = "Settings" },
-            new AccessedEntity { Id = 2, Name = "Branches" },
-            new AccessedEntity { Id = 3, Name = "Employees" },
-            new AccessedEntity { Id = 4, Name = "Merchants" },
-            new AccessedEntity { Id = 5, Name = "Deliveries" },
-            new AccessedEntity { Id = 6, Name = "Governorates" },
-            new AccessedEntity { Id = 7, Name = "Cities" },
-            new AccessedEntity { Id = 8, Name = "Orders" },
-            new AccessedEntity { Id = 9, Name = "Financials" },
-            new AccessedEntity { Id = 10, Name = "Reports" }
+            builder.Entity<ExistedEntities>(entity => entity.HasData(
+            new ExistedEntities { Id = 1, Name = "Settings" },
+            new ExistedEntities { Id = 2, Name = "Branches" },
+            new ExistedEntities { Id = 3, Name = "Employees" },
+            new ExistedEntities { Id = 4, Name = "Merchants" },
+            new ExistedEntities { Id = 5, Name = "Deliveries" },
+            new ExistedEntities { Id = 6, Name = "Governorates" },
+            new ExistedEntities { Id = 7, Name = "Cities" },
+            new ExistedEntities { Id = 8, Name = "Orders" },
+            new ExistedEntities { Id = 9, Name = "Financials" },
+            new ExistedEntities { Id = 10, Name = "Reports" }
              ));
+            // Seed initial account
+            var hasher = new PasswordHasher<Account>();
+            var newAccount = new Account
+            {
+                Id = 1,
+                UserName = "newuser",
+                Email = "newuser@example.com",
+                Name = "New User",
+                Address = "123 New Street",
+                Status = true,
+                PasswordHash = hasher.HashPassword(null, "password") // Set a default password
+            };
+
+            builder.Entity<Account>().HasData(newAccount);
+
+            // Seed permissions for the new account
+            builder.Entity<Permission>().HasData(
+                new Permission
+                {
+                    Id = 1,
+                    AccountId = newAccount.Id,
+                    EntityId = 1, // Settings
+                    CanRead = false,
+                    CanWrite = false,
+                    CanDelete = false,
+                    CanCreate = false
+                },
+                new Permission
+                {
+                    Id = 2,
+                    AccountId = newAccount.Id,
+                    EntityId = 2, // Branches
+                    CanRead = false,
+                    CanWrite = false,
+                    CanDelete = false,
+                    CanCreate = false
+                }, new Permission
+                {
+                    Id = 3,
+                    AccountId = newAccount.Id,
+                    EntityId = 3, // Branches
+                    CanRead = false,
+                    CanWrite = false,
+                    CanDelete = false,
+                    CanCreate = false
+                }, new Permission
+                {
+                    Id = 4,
+                    AccountId = newAccount.Id,
+                    EntityId = 4, // Branches
+                    CanRead = false,
+                    CanWrite = false,
+                    CanDelete = false,
+                    CanCreate = false
+                }, new Permission
+                {
+                    Id = 5,
+                    AccountId = newAccount.Id,
+                    EntityId = 5, // Branches
+                    CanRead = false,
+                    CanWrite = false,
+                    CanDelete = false,
+                    CanCreate = false
+                }, new Permission
+                {
+                    Id = 6,
+                    AccountId = newAccount.Id,
+                    EntityId = 6, // Branches
+                    CanRead = false,
+                    CanWrite = false,
+                    CanDelete = false,
+                    CanCreate = false
+                }, new Permission
+                {
+                    Id = 7,
+                    AccountId = newAccount.Id,
+                    EntityId = 7, // Branches
+                    CanRead = false,
+                    CanWrite = false,
+                    CanDelete = false,
+                    CanCreate = false
+                }, new Permission
+                {
+                    Id = 8,
+                    AccountId = newAccount.Id,
+                    EntityId = 8, // Branches
+                    CanRead = false,
+                    CanWrite = false,
+                    CanDelete = false,
+                    CanCreate = false
+                }, new Permission
+                {
+                    Id = 9,
+                    AccountId = newAccount.Id,
+                    EntityId = 9, // Branches
+                    CanRead = false,
+                    CanWrite = false,
+                    CanDelete = false,
+                    CanCreate = false
+                }, new Permission
+                {
+                    Id = 10,
+                    AccountId = newAccount.Id,
+                    EntityId = 10, // Branches
+                    CanRead = false,
+                    CanWrite = false,
+                    CanDelete = false,
+                    CanCreate = false
+                }
+
+
+            );
             base.OnModelCreating(builder);
         }
     }

@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ShippingSysem.BLL.DTOs.Create;
 using ShippingSysem.BLL.DTOs.EmployeeDTOS;
 using ShippingSystem.DAL.Interfaces.Base;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,17 +19,20 @@ namespace ShippingSysem.BLL.Services
     {
         private readonly IGenericRepository<Account> genRepo;
         private readonly UserManager<Account> userManager;
+        private readonly ShippingDBContext dbContext;
 
-        public EmployeeService(IGenericRepository<Account> genRepo, UserManager<Account> userManager)
+        public EmployeeService(IGenericRepository<Account> genRepo, UserManager<Account> userManager, ShippingDBContext dbContext)
         {
             this.genRepo = genRepo;
             this.userManager = userManager;
+            this.dbContext = dbContext;
         }
 
 
 
-        public async Task<Account> AddEmp(CreateEmployeeDTO EmpDto)
+        public async Task<IdentityResult> AddEmp(CreateEmployeeDTO EmpDto)
         {
+
             Account acc = new Account()
             {
                 UserName = EmpDto.email,
@@ -39,12 +44,29 @@ namespace ShippingSysem.BLL.Services
                 Email = EmpDto.email,
                 Status = EmpDto.Status
 
+
             };
+
+            // Create permissions for all entities with default values (false)
+            var entityPermissions = await dbContext.Set<ExistedEntities>().ToListAsync(); // Assuming you have an entity for entities with IDs
+            var permissions = entityPermissions.Select(entity => new Permission
+            {
+                AccountId = acc.Id,
+                EntityId = entity.Id,
+                CanRead = false,
+                CanWrite = false,
+                CanDelete = false,
+                CanCreate = false
+            }).ToList();
+
+            // Add permissions to the account
+            acc.Permissions = permissions;
+
             var result = await userManager.CreateAsync(acc, EmpDto.password);
             if (result.Succeeded)
             {
 
-                return acc;
+                return result;
             }
             else
             {
@@ -92,7 +114,7 @@ namespace ShippingSysem.BLL.Services
             }
             else
             {
-                // Handle errors (e.g., log them or throw an exception)
+
                 throw new Exception("Failed To Get Employee Data");
             }
 
@@ -118,7 +140,7 @@ namespace ShippingSysem.BLL.Services
             }
             else
             {
-                // Handle errors (e.g., log them or throw an exception)
+
                 throw new Exception("Employee Dosen't Exist");
             }
         }

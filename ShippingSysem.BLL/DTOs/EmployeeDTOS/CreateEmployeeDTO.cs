@@ -1,6 +1,9 @@
-﻿using System;
+﻿using ShippingSysem.BLL.DTOs.EntitiesPermissionsDTOS;
+using ShippingSysem.BLL.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,5 +22,10 @@ namespace ShippingSysem.BLL.DTOs.Create
         public int? RoleId { get; set; }
 
         public bool Status { get; set; }
+
+
+
+
+
     }
 }
