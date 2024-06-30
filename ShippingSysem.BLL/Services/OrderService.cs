@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using ShippingSysem.BLL.DTOs.OrderDTOs;
 using ShippingSystem.DAL.Interfaces;
 using ShippingSystem.DAL.Models;
@@ -24,9 +25,7 @@ namespace ShippingSysem.BLL.Services
         {
             var orders = await repository.GetAllFilterdOrdersAsync(status);
 
-            var ordersDtos = await MappingorderDTOs(orders);
-
-            return await Task.FromResult(ordersDtos);
+            return await MappingorderDTOs(orders);
         }
 
         //Mpping The Orders return from The Database with Pagination and using Status as filteration
@@ -34,11 +33,22 @@ namespace ShippingSysem.BLL.Services
         {
             var orders = await repository.GetAllFilterdOrdersAsync(page, pageSize, status);
 
-            var ordersDtos = await MappingorderDTOs(orders);
-
-            return await Task.FromResult(ordersDtos);
+            return await MappingorderDTOs(orders);
         }
 
+        //Get Count For all orders depending on Status 
+        public async Task<List<OrderCount>> GetOrderCountsAsync()
+        {
+            var Orders = await repository.GetOrderCountsAsync();
+            return await Orders.ToListAsync();
+        }
+
+        //Get Count For all orders for specific mrechant account depending on Status 
+        public async Task<List<OrderCount>> GetOrderCountsAsync(int merchantId)
+        {
+            var Orders = await repository.GetOrderCountsAsync(merchantId);
+            return await Orders.ToListAsync();
+        }
 
         //Private Method using for Mapping The orders return from database(order Repository)
         private async Task<List<OrederReadDTO>> MappingorderDTOs(IQueryable<Order> orders)
@@ -68,5 +78,69 @@ namespace ShippingSysem.BLL.Services
                 DeliverydDate = o.DeliverydDate,
             }).ToListAsync();
         }
+        private async Task<OrederReadDTO> MappingorderToOrderReadDTO(Order order)
+        {
+            
+            return new OrederReadDTO()
+            {
+                Id = order.Id,
+                IsDeleted = order.IsDeleted,
+                ClientName = order.ClientName,
+                Status = order.Status,
+                TotalPrice = order.TotalPrice,
+                ReceivedMoney = order.ReceivedMoney,
+                DeliveryPrice = order.DeliveryPrice,
+                PaiedMoney = order.PaiedMoney,
+                Government = order.government.Name,
+                Cityt = order.city.Name,
+                PhoneOne = order.PhoneOne,
+                PhoneTwo = order.PhoneTwo,
+                Email = order.Email,
+                Notes = order.Notes,
+                StreetAndVillage = order.StreetAndVillage,
+                StaffMemberName = order.StaffMemberAccount.Name,
+                MerchantName = order.MerchantAccount.Name,
+                DeliveryName = order.DeliveryAccount.Name,
+                CreatedDate = order.CreatedDate,
+                DeliverydDate = order.DeliverydDate,
+                TotalWeight=order.TotalWeight
+            };
+        }
+
+
+        // Mapping the Orders from Dto To Database 
+        public async Task<OrderCreateDTO> CreateOrder(OrderCreateDTO _orderCreateDto) {
+            
+            Order order = new Order()
+            {
+                CitytId = _orderCreateDto.CityID,
+                ClientName = _orderCreateDto.ClientName,
+                Email = _orderCreateDto.Email,
+                Notes = _orderCreateDto.Notes,
+                MerchantID = _orderCreateDto.MerchantID,
+                PaymentTypeID = _orderCreateDto.PaymentTypeID,
+                ShippingTypeID = _orderCreateDto.ShippingTypeID,
+                PhoneOne = _orderCreateDto.PhoneOne,
+                PhoneTwo = _orderCreateDto.PhoneTwo,
+                Status = _orderCreateDto.Status,
+                GovernmentId = _orderCreateDto.GovernmentId,
+                Products = _orderCreateDto.Products.Select(p => new Product()
+                {
+                    Quantity = p.Quantity,
+                    Weight = p.Weight,
+                    Price = p.Price,
+                    Name = p.Name,
+
+                }).ToList(),
+            };
+           await repository.AddAsync(order);
+            repository.SaveAsync();
+
+            return _orderCreateDto;
+
+
+        }
+        
+    
     }
 }

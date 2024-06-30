@@ -15,7 +15,10 @@ namespace ShippingSystem.DAL.Models
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
-
+        public DateOnly? CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
         public virtual List<Account>? Accounts { get; set; } = new List<Account>();
+
+        public virtual List<Permission>? Permissions { get; set; } = new List<Permission>();
+
     }
 }

@@ -21,9 +21,9 @@ namespace ShippingSystem.DAL.Models
 
 
 
-        [ForeignKey("Account")]
-        public int AccountId { get; set; }
-        public Account Account { get; set; }
+        [ForeignKey("role")]
+        public int RoleId { get; set; }
+        public Role role { get; set; }
 
         [ForeignKey("Entity")]
         public int EntityId { get; set; }

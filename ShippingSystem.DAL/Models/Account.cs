@@ -33,7 +33,6 @@ namespace ShippingSystem.DAL.Models
         public Branch Branch { get; set; }
 
         public virtual List<Order>? Orders { get; set; } = new List<Order>();
-        public virtual List<Permission>? Permissions { get; set; } = new List<Permission>();
 
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }

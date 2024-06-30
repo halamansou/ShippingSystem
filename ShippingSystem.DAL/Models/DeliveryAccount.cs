@@ -33,6 +33,7 @@ namespace ShippingSystem.DAL.Models
         [ForeignKey("Branch")]
         public int? BranchID { get; set; }
 
+        public string? Governments { get; set; }
         public Branch Branch { get; set; }
 
         public virtual List<Order>? Orders { get; set; } = new List<Order>();

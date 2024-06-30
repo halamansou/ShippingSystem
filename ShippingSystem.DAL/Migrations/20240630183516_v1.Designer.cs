@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShippingSystem.DAL.Models;
 
@@ -11,9 +12,11 @@ using ShippingSystem.DAL.Models;
 namespace ShippingSystem.DAL.Migrations
 {
     [DbContext(typeof(ShippingDBContext))]
-    partial class ShippingDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240630183516_v1")]
+    partial class v1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,13 +227,13 @@ namespace ShippingSystem.DAL.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Address = "123 New Street",
-                            ConcurrencyStamp = "520527f2-f6c4-4b08-88be-8a9576d22905",
+                            ConcurrencyStamp = "10d821ee-0e9a-440d-9684-23a107d707b3",
                             Email = "newuser@example.com",
                             EmailConfirmed = false,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "New User",
-                            PasswordHash = "AQAAAAIAAYagAAAAEENriNaOi1645ck9B0XOFiRIy1+u63wnBtit02Ykl8Pcss55iQP7rlNLawK8lGgpUQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHjiGD5dh4wovwoIXuzyT+dyESnPEJitXyio1E8+pRwnvyNf01fjFjdlVj8psiLg5A==",
                             PhoneNumberConfirmed = false,
                             RoleID = 1,
                             Status = true,

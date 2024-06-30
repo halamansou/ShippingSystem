@@ -27,7 +27,6 @@ namespace ShippingSystem.DAL.Models
         public DbSet<MerchantAccount> MerchantAccounts;
         public DbSet<DeliveryAccount> DeliveryAccounts;
 
-
         public ShippingDBContext(DbContextOptions<ShippingDBContext> options) : base(options)
         {
         }
@@ -74,8 +73,8 @@ namespace ShippingSystem.DAL.Models
               ));
 
             builder.Entity<Role>(entity => entity.HasData(
-              new Role { Id = 1, Name = "Merchant" },
-              new Role { Id = 2, Name = "Employee" },
+              new Role { Id = 1, Name = "Employee" },
+              new Role { Id = 2, Name = "Merchant" },
               new Role { Id = 3, Name = "Delivery" },
               new Role { Id = 4, Name = "Admin" }
               ));
@@ -102,6 +101,7 @@ namespace ShippingSystem.DAL.Models
                 Name = "New User",
                 Address = "123 New Street",
                 Status = true,
+                RoleID = 1,
                 PasswordHash = hasher.HashPassword(null, "password") // Set a default password
             };
 
@@ -112,7 +112,7 @@ namespace ShippingSystem.DAL.Models
                 new Permission
                 {
                     Id = 1,
-                    AccountId = newAccount.Id,
+                    RoleId = 1,
                     EntityId = 1, // Settings
                     CanRead = false,
                     CanWrite = false,
@@ -122,7 +122,7 @@ namespace ShippingSystem.DAL.Models
                 new Permission
                 {
                     Id = 2,
-                    AccountId = newAccount.Id,
+                    RoleId = 1,
                     EntityId = 2, // Branches
                     CanRead = false,
                     CanWrite = false,
@@ -131,7 +131,7 @@ namespace ShippingSystem.DAL.Models
                 }, new Permission
                 {
                     Id = 3,
-                    AccountId = newAccount.Id,
+                    RoleId = 1,
                     EntityId = 3, // Branches
                     CanRead = false,
                     CanWrite = false,
@@ -140,7 +140,7 @@ namespace ShippingSystem.DAL.Models
                 }, new Permission
                 {
                     Id = 4,
-                    AccountId = newAccount.Id,
+                    RoleId = 1,
                     EntityId = 4, // Branches
                     CanRead = false,
                     CanWrite = false,
@@ -149,7 +149,7 @@ namespace ShippingSystem.DAL.Models
                 }, new Permission
                 {
                     Id = 5,
-                    AccountId = newAccount.Id,
+                    RoleId = 1,
                     EntityId = 5, // Branches
                     CanRead = false,
                     CanWrite = false,
@@ -158,7 +158,7 @@ namespace ShippingSystem.DAL.Models
                 }, new Permission
                 {
                     Id = 6,
-                    AccountId = newAccount.Id,
+                    RoleId = 1,
                     EntityId = 6, // Branches
                     CanRead = false,
                     CanWrite = false,
@@ -167,7 +167,7 @@ namespace ShippingSystem.DAL.Models
                 }, new Permission
                 {
                     Id = 7,
-                    AccountId = newAccount.Id,
+                    RoleId = 1,
                     EntityId = 7, // Branches
                     CanRead = false,
                     CanWrite = false,
@@ -176,7 +176,7 @@ namespace ShippingSystem.DAL.Models
                 }, new Permission
                 {
                     Id = 8,
-                    AccountId = newAccount.Id,
+                    RoleId = 1,
                     EntityId = 8, // Branches
                     CanRead = false,
                     CanWrite = false,
@@ -185,7 +185,7 @@ namespace ShippingSystem.DAL.Models
                 }, new Permission
                 {
                     Id = 9,
-                    AccountId = newAccount.Id,
+                    RoleId = 1,
                     EntityId = 9, // Branches
                     CanRead = false,
                     CanWrite = false,
@@ -194,7 +194,7 @@ namespace ShippingSystem.DAL.Models
                 }, new Permission
                 {
                     Id = 10,
-                    AccountId = newAccount.Id,
+                    RoleId = 1,
                     EntityId = 10, // Branches
                     CanRead = false,
                     CanWrite = false,

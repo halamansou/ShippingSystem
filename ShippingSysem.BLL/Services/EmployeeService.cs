@@ -47,20 +47,7 @@ namespace ShippingSysem.BLL.Services
 
             };
 
-            // Create permissions for all entities with default values (false)
-            var entityPermissions = await dbContext.Set<ExistedEntities>().ToListAsync(); // Assuming you have an entity for entities with IDs
-            var permissions = entityPermissions.Select(entity => new Permission
-            {
-                AccountId = acc.Id,
-                EntityId = entity.Id,
-                CanRead = false,
-                CanWrite = false,
-                CanDelete = false,
-                CanCreate = false
-            }).ToList();
 
-            // Add permissions to the account
-            acc.Permissions = permissions;
 
             var result = await userManager.CreateAsync(acc, EmpDto.password);
             if (result.Succeeded)
@@ -86,7 +73,9 @@ namespace ShippingSysem.BLL.Services
                     name = acc.Name,
                     BranchName = acc.Branch.Name,
                     email = acc.Email,
-                    phone = acc.PhoneNumber
+                    phone = acc.PhoneNumber,
+                    Status = acc.Status,
+                    RoleName = acc.Role.Name
                 }).ToList();
 
             return dtos;

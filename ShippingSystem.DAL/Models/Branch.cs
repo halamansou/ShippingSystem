@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShippingSystem.DAL.Models
 {
-    public class Branch : IEntity
+    public class Branch : IEntity,IStatus
     {
         [Key]
         [Required]
@@ -23,11 +23,10 @@ namespace ShippingSystem.DAL.Models
 
         [Required]
         public bool Status { get; set; }
-
-        public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
+		public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
 
         [ForeignKey("Government")]
-        public int? GovernmentID { get; set; }
+        public int GovernmentID { get; set; }
 
         public Government Government { get; set; }
 

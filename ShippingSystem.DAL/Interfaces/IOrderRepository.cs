@@ -21,5 +21,7 @@ namespace ShippingSystem.DAL.Interfaces
         public Task<Order> Update(Order entity);
         public Task<IQueryable<Order>> GetAllFilterdOrdersAsync(int page,int pageSize, string Status = "");
         public Task<IQueryable<Order>> GetAllFilterdOrdersAsync(string Status = "");
+        public  Task<IQueryable<OrderCount>> GetOrderCountsAsync();
+        public  Task<IQueryable<OrderCount>> GetOrderCountsAsync(int merchantId);
     }
 }

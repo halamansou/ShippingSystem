@@ -24,6 +24,8 @@ namespace ShippingSystem.DAL.Models
         [Required]
         public bool Status { get; set; }
 
+        public decimal  NormalShippingCost { get; set; }
+        public decimal  PickupShippingCost { get; set; }
 
 
         [ForeignKey("Government")]

@@ -26,7 +26,6 @@ namespace ShippingSystem.DAL.Models
 
         [ForeignKey("Branch")]
         public int? BranchID { get; set; }
-
         public Branch Branch { get; set; }
 
         public virtual List<City>? Cities { get; set; } = new List<City>();

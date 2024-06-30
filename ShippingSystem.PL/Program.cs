@@ -27,6 +27,7 @@ namespace ShippingSystem.PL
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DB"));
             });
+
             builder.Services.AddIdentity<Account, Role>(options =>
             {
                 options.User.RequireUniqueEmail = true;
@@ -70,6 +71,8 @@ namespace ShippingSystem.PL
 
             //Register Emp Services 
             builder.Services.AddScoped<IGenericRepository<Account>, GenericRepository<Account>>();
+            builder.Services.AddScoped<IGenericStatusRepository<Branch>, GenericStatusRepository<Branch>>();
+            //builder.Services.AddScoped<IGenericStatusRepository<Government>, GenericStatusRepository<Government>>();
             builder.Services.AddScoped<IGenericRepository<ExistedEntities>, GenericRepository<ExistedEntities>>();
 
             //Delivery Accounts
@@ -77,16 +80,39 @@ namespace ShippingSystem.PL
 
             //builder.Services.AddScoped<IGenericRepository<Permission_User_Entities>, GenericRepository<Permission_User_Entities>>();
             builder.Services.AddScoped<EmployeeService>();
-            builder.Services.AddScoped<PermissionsService>();
+            //builder.Services.AddScoped<PermissionsService>();
 
             // Delivery Accounts Service
-            builder.Services.AddScoped< DeliveryAccountService>();
+            builder.Services.AddScoped<DeliveryAccountService>();
 
 
             //Register Order Service
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
             builder.Services.AddScoped<OrderService>();
+            builder.Services.AddScoped<BranchService>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+
+
+
+            //  add  CORS configuration:
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+
+
+
+
+
+
 
 
             var app = builder.Build();
@@ -99,7 +125,7 @@ namespace ShippingSystem.PL
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors();
             app.UseAuthorization();
 
 
