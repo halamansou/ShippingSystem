@@ -8,7 +8,7 @@ namespace ShippingSysem.BLL.DTOs.DeliveryDTOS
 {
     public class DisplayDeliveryAccountsDTO
     {
-
+        public int id {  get; set; }
         public string UserName { get; set; } 
         public string Email { get; set; } 
         public string Phone { get; set; } 

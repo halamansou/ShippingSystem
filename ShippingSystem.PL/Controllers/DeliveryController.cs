@@ -36,7 +36,8 @@ namespace ShippingSystem.PL.Controllers
             var success = await deliveryAccountService.AddDeliveryAccount(dto);
             if (success)
             {
-                return Ok("Delivery account added successfully.");
+                return Ok(new { message = "Delivery account added successfully." });
+
             }
 
             return BadRequest("Could not add delivery account.");

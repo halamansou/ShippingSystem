@@ -27,6 +27,7 @@ namespace ShippingSysem.BLL.Services
             var dtos = accounts
                 .Select(acc => new DisplayDeliveryAccountsDTO
                 {
+                    id= acc.Id,
                     UserName = acc.UserName,
                     Email = acc.Email,
                     Phone = acc.PhoneNumber,
