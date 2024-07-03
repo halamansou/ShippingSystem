@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShippingSysem.BLL.DTOs.EntitiesPermissionsDTOS;
@@ -34,24 +35,39 @@ namespace ShippingSystem.PL.Controllers
             var roles = await service.GetAllRoles();
             return Ok(roles);
         }
-        [Route("AddRole")]
+        [HttpGet("GetRole/{id}")]
 
-        [HttpPost]
+        public async Task<IActionResult> GetRoleById(int id)
+        {
+            var role = await service.GetRole(id);
+            return Ok(new
+            {
+                success = true,
+
+                roleId = role.Id,
+                roleName = role.Name,
+            });
+        }
+
+        [HttpPost("AddRole/{rolename}")]
         public async Task<IActionResult> AddRole(string rolename)
         {
             var result = await service.AddRole(rolename);
-            if (result != null) return Ok($"Created Role with Name : {result.Name} and ID : {result.Id}");
+            var respone = new { Result = result.Name, ID = result.Id };
+            if (result != null) return Ok(respone);
 
             return NotFound();
         }
-        [Route("UpdateRole")]
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateRole(int id, string rolename)
+
+        [HttpPut("UpdateRole/{id}")]
+        public async Task<IActionResult> UpdateRole(int id, [FromBody] string rolename)
         {
             var result = await service.UpdateRole(id, rolename);
-            if (result != null) return Ok($"Updated Role with Name : {result.Name} and ID : {result.Id}");
-
+            if (result != null)
+            {
+                return Ok(new { Result = result.Name, ID = result.Id });
+            }
             return NotFound();
         }
 
@@ -72,14 +88,16 @@ namespace ShippingSystem.PL.Controllers
             return NotFound();
         }
 
-        [Route("UpdateRolePermissions")]
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateRolePermissions(int id, List<PermissionDTO> permissions)
+
+        [HttpPut("UpdateRolePermissions/{id}")]
+        public async Task<IActionResult> UpdateRolePermissions(int id, [FromBody] List<PermissionDTO> permissions)
         {
             var result = await service.UpdateRolePermissionsForUser(id, permissions);
-            if (result) return Ok("Updated");
-            else return NotFound();
+
+            if (result != null) return Ok(new { state = "Updated", restult = result });
+
+            return Ok(new { state = "failed" });
         }
 
 
@@ -88,7 +106,14 @@ namespace ShippingSystem.PL.Controllers
         public async Task<IActionResult> DeleteRole(int id)
         {
             var result = await service.DeleteRole(id);
-            if (result) return Ok("Deleted");
+
+
+            if (result.IsDeleted == true) return Ok(new
+            {
+                success = true,
+
+                roleId = result.Id
+            });
             else return NotFound();
         }
 

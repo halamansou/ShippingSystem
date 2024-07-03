@@ -44,6 +44,14 @@ namespace ShippingSysem.BLL.Services
             return allRoles;
         }
 
+        public async Task<Role> GetRole(int id)
+        {
+            var role = await RolegenRepo.GetByIdAsync(id);
+
+
+            return role;
+        }
+
         public async Task<Role> UpdateRole(int id, string rolename)
         {
             var role = await RolegenRepo.GetByIdAsync(id);
@@ -56,12 +64,12 @@ namespace ShippingSysem.BLL.Services
         {
             var acc = dbContext.Set<Permission>().Where(i => i.RoleId == roleid && i.role.IsDeleted == false).Select(a => new PermissionDTO
             {
-                EntityId = a.Entity.Id,
-                EntityName = a.Entity.Name,
-                CanRead = a.CanRead,
-                CanWrite = a.CanWrite,
-                CanDelete = a.CanDelete,
-                CanCreate = a.CanCreate
+                entityId = a.Entity.Id,
+                entityName = a.Entity.Name,
+                canRead = a.CanRead,
+                canWrite = a.CanWrite,
+                canDelete = a.CanDelete,
+                canCreate = a.CanCreate
             }).ToList();
 
 
@@ -90,42 +98,48 @@ namespace ShippingSysem.BLL.Services
             return (role);
         }
 
-        public async Task<bool> UpdateRolePermissionsForUser(int id, List<PermissionDTO> permissions)
+        public async Task<List<PermissionDTO>> UpdateRolePermissionsForUser(int id, List<PermissionDTO> permissions)
         {
-            var role = await dbContext.Set<Role>()
-                                    .Include(e => e.Permissions)
-                                    .FirstOrDefaultAsync(i => i.Id == id && i.IsDeleted == false);
-
-            if (role == null)
+            try
             {
-                throw new ArgumentException($"Account with ID {id} not found.");
-            }
+                var role = await dbContext.Set<Role>()
+                                       .Include(e => e.Permissions)
+                                       .FirstOrDefaultAsync(i => i.Id == id && i.IsDeleted == false);
 
-
-            // Update permissions based on permissionDtos
-            foreach (var permissionDto in permissions)
-            {
-                var existingPermission = role.Permissions.FirstOrDefault(p => p.EntityId == permissionDto.EntityId);
-
-                if (existingPermission != null)
+                if (role == null)
                 {
-                    existingPermission.CanRead = permissionDto.CanRead;
-                    existingPermission.CanWrite = permissionDto.CanWrite;
-                    existingPermission.CanDelete = permissionDto.CanDelete;
-                    existingPermission.CanCreate = permissionDto.CanCreate;
+                    throw new ArgumentException($"Account with ID {id} not found.");
                 }
 
+
+                // Update permissions based on permissionDtos
+                foreach (var permissionDto in permissions)
+                {
+                    var existingPermission = role.Permissions.FirstOrDefault(p => p.EntityId == permissionDto.entityId);
+
+                    if (existingPermission != null)
+                    {
+                        existingPermission.CanRead = permissionDto.canRead;
+                        existingPermission.CanWrite = permissionDto.canWrite;
+                        existingPermission.CanDelete = permissionDto.canDelete;
+                        existingPermission.CanCreate = permissionDto.canCreate;
+                    }
+
+                }
+                await RolegenRepo.SaveAsync();
+                return permissions;
+
             }
-            await RolegenRepo.SaveAsync();
-            return true;
+            catch (Exception ex) { throw ex; }
+
 
         }
 
 
-        public async Task<bool> DeleteRole(int id)
+        public async Task<Role> DeleteRole(int id)
         {
             var entity = await RolegenRepo.DeleteById(id);
-            return (entity.IsDeleted);
+            return (entity);
         }
 
     }

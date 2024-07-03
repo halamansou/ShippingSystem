@@ -42,5 +42,10 @@ namespace ShippingSysem.BLL.DTOs.MerchantDTOS
         [Required(ErrorMessage = "Refund percentage is required")]
         [Range(0, 100, ErrorMessage = "Refund percentage must be between 0 and 100")]
         public decimal Refund_Percentage { get; set; }
+
+
+        [Required(ErrorMessage = "Phone number is required")]
+        [RegularExpression(@"^01[0125][0-9]{8}$", ErrorMessage = "Invalid phone number")]
+        public string Phone { get; set; }
     }
 }

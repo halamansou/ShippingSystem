@@ -4,6 +4,7 @@ using ShippingSystem.DAL.Interfaces.Base;
 using ShippingSystem.DAL.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,9 @@ namespace ShippingSysem.BLL.Services
             var dtos = accounts
                 .Select(acc => new DisplayMerchantAccountsDTO
                 {
+                    
                     ID=acc.Id,
+                    Phone=acc.Phone,
                     Name = acc.Name,
                     email = acc.Email,
                     password = acc.PasswordHash,
@@ -38,6 +41,7 @@ namespace ShippingSysem.BLL.Services
                     City = acc.City,
                     Pickup_Price = acc.Pickup_Price,
                     Refund_Percentage = acc.Id,
+                    
 
                 })
                 .ToList();
@@ -55,6 +59,7 @@ namespace ShippingSysem.BLL.Services
             {
                 var account = new MerchantAccount
                 {
+                    Phone = dto.Phone,
                     Name = dto.Name,
                     Email = dto.Email,
                     PasswordHash = dto.Password,
@@ -125,6 +130,7 @@ namespace ShippingSysem.BLL.Services
 
                 // Update properties
                 existingAccount.Name = dto.Name;
+                existingAccount.Phone = dto.Phone;
                 existingAccount.Email = dto.Email;
                 existingAccount.PasswordHash = dto.Password;
                 existingAccount.BranchID = dto.BranchId;

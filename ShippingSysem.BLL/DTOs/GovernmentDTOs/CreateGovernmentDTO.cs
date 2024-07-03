@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShippingSysem.BLL.DTOs.BranchDTOs
+namespace ShippingSysem.BLL.DTOs.GovernmentDTOs
 {
-	public class CreateBranchDTO
+	public class CreateGovernmentDTO
 	{
 		public string Name { get; set; }
 		public bool Status { get; set; } = true;
-		public int GovernmentID { get; set; }
 	}
 }

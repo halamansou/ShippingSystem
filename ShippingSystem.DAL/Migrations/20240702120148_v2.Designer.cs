@@ -12,8 +12,8 @@ using ShippingSystem.DAL.Models;
 namespace ShippingSystem.DAL.Migrations
 {
     [DbContext(typeof(ShippingDBContext))]
-    [Migration("20240630183516_v1")]
-    partial class v1
+    [Migration("20240702120148_v2")]
+    partial class v2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,13 +227,13 @@ namespace ShippingSystem.DAL.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Address = "123 New Street",
-                            ConcurrencyStamp = "10d821ee-0e9a-440d-9684-23a107d707b3",
+                            ConcurrencyStamp = "96fbc536-bc7e-44d9-a4a5-8da7b23216d9",
                             Email = "newuser@example.com",
                             EmailConfirmed = false,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "New User",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHjiGD5dh4wovwoIXuzyT+dyESnPEJitXyio1E8+pRwnvyNf01fjFjdlVj8psiLg5A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM3nkNA4xHbvv2iI3KN6TQUTFHqqR/RX49pwYt7p/Via0M2fVT6zWOO56ADdeTb8GA==",
                             PhoneNumberConfirmed = false,
                             RoleID = 1,
                             Status = true,
@@ -282,7 +282,7 @@ namespace ShippingSystem.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("GovernmentID")
+                    b.Property<int>("GovernmentID")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -963,28 +963,28 @@ namespace ShippingSystem.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateOnly(2024, 6, 30),
+                            CreatedDate = new DateOnly(2024, 7, 2),
                             IsDeleted = false,
                             Name = "Employee"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateOnly(2024, 6, 30),
+                            CreatedDate = new DateOnly(2024, 7, 2),
                             IsDeleted = false,
                             Name = "Merchant"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateOnly(2024, 6, 30),
+                            CreatedDate = new DateOnly(2024, 7, 2),
                             IsDeleted = false,
                             Name = "Delivery"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateOnly(2024, 6, 30),
+                            CreatedDate = new DateOnly(2024, 7, 2),
                             IsDeleted = false,
                             Name = "Admin"
                         });
@@ -1035,6 +1035,36 @@ namespace ShippingSystem.DAL.Migrations
                             Name = "24 Hour",
                             Price = 70m
                         });
+                });
+
+            modelBuilder.Entity("ShippingSystem.DAL.Models.SpecialOffer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("DeliveryPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Government")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MerchantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SpecialOffer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -1118,7 +1148,9 @@ namespace ShippingSystem.DAL.Migrations
                 {
                     b.HasOne("ShippingSystem.DAL.Models.Government", "Government")
                         .WithMany("Cities")
-                        .HasForeignKey("GovernmentID");
+                        .HasForeignKey("GovernmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Government");
                 });

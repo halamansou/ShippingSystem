@@ -10,5 +10,6 @@ namespace ShippingSystem.DAL.Interfaces.Base
     public interface IGenericStatusRepository<T> :IGenericRepository<T> where T : class ,IStatus,IEntity
 	{
         public void ChangeStatus(T row);
+        public void Delete(T row);
     }
 }

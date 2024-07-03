@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace ShippingSystem.DAL.Models
 {
-    public class City : IEntity
+    public class City : IEntity,IStatus
     {
         [Key]
         [Required]
@@ -29,7 +29,7 @@ namespace ShippingSystem.DAL.Models
 
 
         [ForeignKey("Government")]
-        public int? GovernmentID { get; set; }
+        public int GovernmentID { get; set; }
 
         public Government Government { get; set; }
     }

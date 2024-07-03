@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShippingSystem.DAL.Models
 {
-    public class Government : IEntity
+    public class Government : IEntity,IStatus
     {
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }

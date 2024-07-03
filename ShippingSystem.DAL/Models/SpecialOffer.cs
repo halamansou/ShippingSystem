@@ -15,6 +15,8 @@ namespace ShippingSystem.DAL.Models
         public bool IsDeleted { get; set; }
         public string Government { get; set; }
         public string City { get; set; }
+        public decimal DeliveryPrice { get; set; }
+
 
         [ForeignKey("MerchantAccount")]
         public int MerchantId { get; set; }

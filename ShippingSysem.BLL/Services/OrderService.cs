@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using ShippingSysem.BLL.DTOs.OrderDTOs;
+using ShippingSysem.BLL.DTOs.ProductDTOs;
 using ShippingSystem.DAL.Interfaces;
 using ShippingSystem.DAL.Models;
 using System;
@@ -80,7 +81,7 @@ namespace ShippingSysem.BLL.Services
         }
         private async Task<OrederReadDTO> MappingorderToOrderReadDTO(Order order)
         {
-            
+
             return new OrederReadDTO()
             {
                 Id = order.Id,
@@ -103,14 +104,15 @@ namespace ShippingSysem.BLL.Services
                 DeliveryName = order.DeliveryAccount.Name,
                 CreatedDate = order.CreatedDate,
                 DeliverydDate = order.DeliverydDate,
-                TotalWeight=order.TotalWeight
+                TotalWeight = order.TotalWeight
             };
         }
 
 
         // Mapping the Orders from Dto To Database 
-        public async Task<OrderCreateDTO> CreateOrder(OrderCreateDTO _orderCreateDto) {
-            
+        public async Task<OrderCreateDTO> CreateOrder(OrderCreateDTO _orderCreateDto)
+        {
+
             Order order = new Order()
             {
                 CitytId = _orderCreateDto.CityID,
@@ -124,6 +126,9 @@ namespace ShippingSysem.BLL.Services
                 PhoneTwo = _orderCreateDto.PhoneTwo,
                 Status = _orderCreateDto.Status,
                 GovernmentId = _orderCreateDto.GovernmentId,
+                StreetAndVillage = _orderCreateDto.StreetAndVillage,
+                TotalWeight = _orderCreateDto.TotalWeight,
+                TotalPrice = _orderCreateDto.TotalPrice,
                 Products = _orderCreateDto.Products.Select(p => new Product()
                 {
                     Quantity = p.Quantity,
@@ -133,14 +138,14 @@ namespace ShippingSysem.BLL.Services
 
                 }).ToList(),
             };
-           await repository.AddAsync(order);
-            repository.SaveAsync();
+            await repository.AddAsync(order);
+            await repository.SaveAsync();
 
             return _orderCreateDto;
 
 
         }
-        
-    
+
+
     }
 }

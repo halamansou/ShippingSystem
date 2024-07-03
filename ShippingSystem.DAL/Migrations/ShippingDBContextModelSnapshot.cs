@@ -224,13 +224,13 @@ namespace ShippingSystem.DAL.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Address = "123 New Street",
-                            ConcurrencyStamp = "a5dd3351-d3fe-4353-8bbc-f74d8f3056be",
+                            ConcurrencyStamp = "d1707d60-1b75-4f78-a270-3f8dfcf20f4d",
                             Email = "newuser@example.com",
                             EmailConfirmed = false,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             Name = "New User",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFGjNNbfZ1CNlI5A9QJ1huIU7jxWL2UEbr1M6E1ABchK/bQLnAVpt49OGnHH8dmWrA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFGNJ7w4x3/TuDG2U4cDt6aR5HHbWyCph0YzjnDbMb3x8Y8oaHTOlNtzFV03rG2B4g==",
                             PhoneNumberConfirmed = false,
                             RoleID = 1,
                             Status = true,
@@ -279,7 +279,7 @@ namespace ShippingSystem.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("GovernmentID")
+                    b.Property<int>("GovernmentID")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -564,6 +564,10 @@ namespace ShippingSystem.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
@@ -1046,6 +1050,9 @@ namespace ShippingSystem.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("DeliveryPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Government")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1142,7 +1149,9 @@ namespace ShippingSystem.DAL.Migrations
                 {
                     b.HasOne("ShippingSystem.DAL.Models.Government", "Government")
                         .WithMany("Cities")
-                        .HasForeignKey("GovernmentID");
+                        .HasForeignKey("GovernmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Government");
                 });

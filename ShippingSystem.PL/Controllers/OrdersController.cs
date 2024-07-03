@@ -60,5 +60,11 @@ namespace ShippingSystem.PL.Controllers
             }
                 
         }
+        [HttpPost]
+        public async Task<IActionResult> AddOrder(OrderCreateDTO orderCreateDto)
+        {
+            var order = await orderService.CreateOrder(orderCreateDto);
+            return Ok(order);
+        }
     }
 }

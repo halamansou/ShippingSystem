@@ -20,6 +20,7 @@ namespace ShippingSysem.BLL.DTOs.MerchantDTOS
 
         public string StoreName { get; set; }
 
+        public string Phone { get; set; }
         public string Government { get; set; }
         public string City { get; set; }
         public decimal Pickup_Price { get; set; }

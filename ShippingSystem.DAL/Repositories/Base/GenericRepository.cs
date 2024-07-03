@@ -1,5 +1,4 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ShippingSystem.DAL.Interfaces.Base;
 using ShippingSystem.DAL.Models;
 using ShippingSystem.DAL.Models.Base;
@@ -7,8 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
+
 namespace ShippingSystem.DAL.Repositories.Base
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class, IEntity
@@ -28,15 +27,15 @@ namespace ShippingSystem.DAL.Repositories.Base
             return entity;
         }
 
-        //public async Task<T> DeleteById(int id)
-        //{
-        //    T entity = await GetByIdAsync(id);
-        //    entity.IsDeleted = true;
-        //    await context.SaveChangesAsync();
-        //    return entity;
-        //}
-
         public async Task<T> DeleteById(int id)
+        {
+            T entity = await GetByIdAsync(id);
+            entity.IsDeleted = true;
+            await context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<T> DeleteFullEntityById(int id)
         {
             var entity = await GetByIdAsync(id);
             if (entity != null)
