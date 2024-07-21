@@ -27,7 +27,6 @@ namespace ShippingSysem.BLL.Services
             var dtos = accounts
                 .Select(acc => new DisplayDeliveryAccountsDTO
                 {
-                    id= acc.Id,
                     UserName = acc.UserName,
                     Email = acc.Email,
                     Phone = acc.PhoneNumber,
@@ -40,10 +39,9 @@ namespace ShippingSysem.BLL.Services
 
             return dtos;
         }
-        
-        
-        
         //method to  Add Delivery Account
+
+
 
         public async Task<bool> AddDeliveryAccount(AddDeliveryAccountDTO dto)
         {
@@ -100,49 +98,6 @@ namespace ShippingSysem.BLL.Services
             }
         }
 
-
-        // Method to get Delivery Account
-
-        public async Task<DeliveryAccount> GetDeliveryAccountById(int id)
-        {
-            return await genRepo.GetByIdAsync(id);
-        }
-
-        // Method to update Delivery Account
-
-        public async Task<bool> UpdateDeliveryAccount(int accountId, AddDeliveryAccountDTO dto)
-        {
-            try
-            {
-                var existingAccount = await genRepo.GetByIdAsync(accountId);
-                if (existingAccount == null)
-                {
-                    _logger.LogWarning($"Delivery account with ID {accountId} not found.");
-                    return false;
-                }
-
-                // Update properties
-                existingAccount.UserName = dto.UserName;
-                existingAccount.Email = dto.Email;
-                existingAccount.PasswordHash = dto.Password;
-                existingAccount.Governments = dto.Governments;
-                existingAccount.BranchID = dto.Branch;
-                existingAccount.PhoneNumber = dto.Phone;
-                existingAccount.Address = dto.Address;
-                existingAccount.Discount_type = dto.Discount_type;
-                existingAccount.Company_Percantage = dto.Company_Percantage;
-
-                await genRepo.Update(existingAccount);
-                await genRepo.SaveAsync();
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error updating delivery account with ID {accountId}");
-                return false;
-            }
-        }
 
 
 

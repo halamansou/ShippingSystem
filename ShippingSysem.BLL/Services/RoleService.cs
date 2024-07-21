@@ -64,12 +64,12 @@ namespace ShippingSysem.BLL.Services
         {
             var acc = dbContext.Set<Permission>().Where(i => i.RoleId == roleid && i.role.IsDeleted == false).Select(a => new PermissionDTO
             {
-                entityId = a.Entity.Id,
-                entityName = a.Entity.Name,
-                canRead = a.CanRead,
-                canWrite = a.CanWrite,
-                canDelete = a.CanDelete,
-                canCreate = a.CanCreate
+                EntityId = a.Entity.Id,
+                EntityName = a.Entity.Name,
+                CanRead = a.CanRead,
+                CanWrite = a.CanWrite,
+                CanDelete = a.CanDelete,
+                CanCreate = a.CanCreate
             }).ToList();
 
 
@@ -98,40 +98,34 @@ namespace ShippingSysem.BLL.Services
             return (role);
         }
 
-        public async Task<List<PermissionDTO>> UpdateRolePermissionsForUser(int id, List<PermissionDTO> permissions)
+        public async Task<bool> UpdateRolePermissionsForUser(int id, List<PermissionDTO> permissions)
         {
-            try
+            var role = await dbContext.Set<Role>()
+                                    .Include(e => e.Permissions)
+                                    .FirstOrDefaultAsync(i => i.Id == id && i.IsDeleted == false);
+
+            if (role == null)
             {
-                var role = await dbContext.Set<Role>()
-                                       .Include(e => e.Permissions)
-                                       .FirstOrDefaultAsync(i => i.Id == id && i.IsDeleted == false);
+                throw new ArgumentException($"Account with ID {id} not found.");
+            }
 
-                if (role == null)
+
+            // Update permissions based on permissionDtos
+            foreach (var permissionDto in permissions)
+            {
+                var existingPermission = role.Permissions.FirstOrDefault(p => p.EntityId == permissionDto.EntityId);
+
+                if (existingPermission != null)
                 {
-                    throw new ArgumentException($"Account with ID {id} not found.");
+                    existingPermission.CanRead = permissionDto.CanRead;
+                    existingPermission.CanWrite = permissionDto.CanWrite;
+                    existingPermission.CanDelete = permissionDto.CanDelete;
+                    existingPermission.CanCreate = permissionDto.CanCreate;
                 }
-
-
-                // Update permissions based on permissionDtos
-                foreach (var permissionDto in permissions)
-                {
-                    var existingPermission = role.Permissions.FirstOrDefault(p => p.EntityId == permissionDto.entityId);
-
-                    if (existingPermission != null)
-                    {
-                        existingPermission.CanRead = permissionDto.canRead;
-                        existingPermission.CanWrite = permissionDto.canWrite;
-                        existingPermission.CanDelete = permissionDto.canDelete;
-                        existingPermission.CanCreate = permissionDto.canCreate;
-                    }
-
-                }
-                await RolegenRepo.SaveAsync();
-                return permissions;
 
             }
-            catch (Exception ex) { throw ex; }
-
+            await RolegenRepo.SaveAsync();
+            return true;
 
         }
 

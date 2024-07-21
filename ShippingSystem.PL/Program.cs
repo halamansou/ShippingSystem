@@ -1,7 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
 using ShippingSysem.BLL.Services;
-using ShippingSystem.BLL.Services;
 using ShippingSystem.DAL.Interfaces;
 using ShippingSystem.DAL.Interfaces.Base;
 using ShippingSystem.DAL.Models;
@@ -74,31 +73,19 @@ namespace ShippingSystem.PL
             builder.Services.AddScoped<IGenericRepository<Account>, GenericRepository<Account>>();
             builder.Services.AddScoped<IGenericStatusRepository<Government>, GenericStatusRepository<Government>>();
             builder.Services.AddScoped<IGenericRepository<Role>, GenericRepository<Role>>();
-            builder.Services.AddScoped<RoleService>();
             builder.Services.AddScoped<IGenericStatusRepository<Branch>, GenericStatusRepository<Branch>>();
             //builder.Services.AddScoped<IGenericStatusRepository<Government>, GenericStatusRepository<Government>>();
             builder.Services.AddScoped<IGenericRepository<ExistedEntities>, GenericRepository<ExistedEntities>>();
+
             //Delivery Accounts
             builder.Services.AddScoped<IGenericRepository<DeliveryAccount>, GenericRepository<DeliveryAccount>>();
-            builder.Services.AddScoped(typeof(GenericRepository<>));
 
-            //Merchant Accounts
-            builder.Services.AddScoped<IGenericRepository<MerchantAccount>, GenericRepository<MerchantAccount>>();
             //builder.Services.AddScoped<IGenericRepository<Permission_User_Entities>, GenericRepository<Permission_User_Entities>>();
             builder.Services.AddScoped<EmployeeService>();
             //builder.Services.AddScoped<PermissionsService>();
 
-
-
-
             // Delivery Accounts Service
             builder.Services.AddScoped<DeliveryAccountService>();
-
-            // Delivery Merchant Service
-
-            builder.Services.AddScoped<MerchantAccountService>();
-
-            builder.Services.AddScoped<SpecialOfferService>();
 
 
             //Register Order Service
@@ -112,7 +99,7 @@ namespace ShippingSystem.PL
             //Register City Service
             builder.Services.AddScoped<IGenericRepository<Government>, GenericRepository<Government>>();
             builder.Services.AddScoped<IGenericRepository<City>, GenericRepository<City>>();
-            builder.Services.AddScoped<CityReposatry>();
+            builder.Services.AddScoped< CityReposatry>();
             builder.Services.AddScoped<CityService>();
 
 
@@ -129,10 +116,10 @@ namespace ShippingSystem.PL
                 });
             });
 
+         
 
-
-
-
+            
+            
 
 
 

@@ -65,8 +65,7 @@ namespace ShippingSysem.BLL.Services
         public async Task<List<ReadEmployeeDTO>> GetAllEmps()
         {
             var accounts = await genRepo.GetAllAsync();
-
-            var dtos = accounts.Where(e => e.Role.Name == "Employee")
+            var dtos = accounts
                 .Select(acc =>
                 new ReadEmployeeDTO
                 {
@@ -85,11 +84,7 @@ namespace ShippingSysem.BLL.Services
 
         public async Task<ReadEmployeeDTO> GetEmpById(int id)
         {
-            //var acc = await genRepo.GetByIdAsync(id);
-            var acc = await dbContext.Accounts
-                    .Include(e => e.Branch)
-                    .Include(e => e.Role)
-                    .FirstOrDefaultAsync(e => e.Id == id);
+            var acc = await genRepo.GetByIdAsync(id);
 
             if (acc != null)
             {
@@ -98,9 +93,7 @@ namespace ShippingSysem.BLL.Services
                     id = acc.Id,
                     name = acc.Name,
                     address = acc.Address,
-                    BranchName = acc.Branch?.Name,
-                    branchId = acc.BranchID,
-                    roleId = acc.RoleID,
+                    BranchName = acc.Branch?.Name, // Safe navigation operator
                     email = acc.Email,
                     phone = acc.PhoneNumber,
                     RoleName = acc.Role?.Name, // Safe navigation operator
@@ -118,39 +111,29 @@ namespace ShippingSysem.BLL.Services
         }
 
 
-        public async Task<Account> UpdateEmp(int id, CreateEmployeeDTO empDto)
+        public async Task<Account> UpdateEmp(int id, CreateEmployeeDTO EmpDto)
         {
             var acc = await genRepo.GetByIdAsync(id);
-            if (acc == null)
+            if (acc != null)
             {
-                throw new Exception("Employee doesn't exist");
+                acc.Name = EmpDto.name;
+                acc.PhoneNumber = EmpDto.phone;
+                acc.Address = EmpDto.address;
+                acc.BranchID = EmpDto.BranchId;
+                acc.RoleID = EmpDto.RoleId;
+                acc.Email = EmpDto.email;
+                acc.Status = EmpDto.Status;
+
+                await genRepo.SaveAsync();
+                return acc;
             }
+            else
+            {
 
-            acc.Name = empDto.name;
-            acc.PhoneNumber = empDto.phone;
-            acc.Address = empDto.address;
-            acc.BranchID = empDto.BranchId;
-            acc.RoleID = empDto.RoleId;
-            acc.Email = empDto.email;
-
-
-            // Assuming the password is hashed before storing
-            acc.PasswordHash = empDto.password;
-
-            await genRepo.SaveAsync();
-            return acc;
+                throw new Exception("Employee Dosen't Exist");
+            }
         }
 
-
-
-        public async Task<bool> UpdateEmpStatus(int id)
-        {
-            var acc = await genRepo.GetByIdAsync(id);
-            acc.Status = !acc.Status;
-            await genRepo.SaveAsync();
-            if (acc != null) return true;
-            return false;
-        }
         public async Task<Account> DeleteEmpByID(int id)
         {
             var acc = await genRepo.DeleteById(id);

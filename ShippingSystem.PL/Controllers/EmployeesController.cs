@@ -30,45 +30,30 @@ namespace ShippingSystem.PL.Controllers
             return Ok(account);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("id")]
         public async Task<IActionResult> GetEmpByID(int id)
         {
-            try
-            {
-                var employee = await empService.GetEmpById(id);
-                return Ok(employee);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-
-        }
-
-        [HttpPut("UpdateEmpStatus/{id}")]
-        public async Task<IActionResult> UpdateEmpStatus(int id)
-        {
-            var account = await empService.UpdateEmpStatus(id);
+            var account = await empService.GetEmpById(id);
             return Ok(account);
         }
 
 
-        [HttpPost("Add")]
+        [HttpPost]
         public async Task<IActionResult> AddEmp(CreateEmployeeDTO EmpDto)
         {
             var account = await empService.AddEmp(EmpDto);
             return Ok(account);
         }
 
-        [HttpPut("Update/{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateEmp(int id, CreateEmployeeDTO EmpDto)
         {
-            var acc = await empService.UpdateEmp(id, EmpDto);
-            //var account = empService.GetEmpById(id);
-            return Ok(acc);
+            await empService.UpdateEmp(id, EmpDto);
+            var account = empService.GetEmpById(id);
+            return Ok(account);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteEmp(int id)
         {
             var acc = await empService.DeleteEmpByID(id);

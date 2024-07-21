@@ -35,8 +35,17 @@ namespace ShippingSysem.BLL.Services
 			var branches = await iGenericStatusRepository.GetAllAsync();
 			if (branches != null)
 			{
-				var dtos = branches.ToList()
-				.Select(branch => MappingBranchToReadBranchDTO(branch)).ToList();
+				var dtos = await branches
+				.Select(branch => new ReadBranchDTO
+				{
+					Id = branch.Id,
+					Name = branch.Name,
+					CreatedDate = branch.CreatedDate,
+					GovernmentID = branch.GovernmentID,
+					GovernmentName = iGenericStatusRepositoryGovernment.GetByIdAsync(branch.GovernmentID).Result.Name,
+					IsDeleted = branch.IsDeleted,
+					Status = branch.Status
+				}).ToListAsync();
 
 				return dtos;
 			}
@@ -58,7 +67,7 @@ namespace ShippingSysem.BLL.Services
 				await iGenericStatusRepository.SaveAsync();
 
 				//mapping from Branch to ReadBranchDTO
-				return MappingBranchToReadBranchDTO(updatedBranch);
+				return MappingBranchToReadBranchDTO(branch);
 			}
 			else
 				return null;
@@ -78,7 +87,7 @@ namespace ShippingSysem.BLL.Services
 			await iGenericStatusRepository.SaveAsync();
 
 			//mapping from Branch to ReadBranchDTO
-			return MappingBranchToReadBranchDTO(addedBranch);
+			return MappingBranchToReadBranchDTO(branch);
 		}
 		public async Task<bool> DeleteBranch(int id)
 		{

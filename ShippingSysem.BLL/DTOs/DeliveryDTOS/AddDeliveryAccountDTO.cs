@@ -4,18 +4,14 @@ namespace ShippingSysem.BLL.DTOs.DeliveryDTOS
 {
     public class AddDeliveryAccountDTO
     {
-
-        [Required(ErrorMessage = "Name is required")]
-        [MinLength(3, ErrorMessage = "Name must be at least 3 characters")]
+        [Required]
         public string UserName { get; set; }
 
-       
-        [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Invalid email address")]
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
-        [MinLength(8, ErrorMessage = "Password must be at least 8 characters")]
+        [Required]
         public string Password { get; set; }
 
         [Required]
@@ -24,8 +20,7 @@ namespace ShippingSysem.BLL.DTOs.DeliveryDTOS
         [Required]
         public int Branch { get; set; }
 
-        [Required(ErrorMessage = "Phone number is required")]
-        [RegularExpression(@"^01[0125][0-9]{8}$", ErrorMessage = "Invalid phone number")]
+        [Required]
         public string Phone { get; set; }
 
         [Required]

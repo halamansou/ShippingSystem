@@ -36,8 +36,7 @@ namespace ShippingSystem.PL.Controllers
             var success = await deliveryAccountService.AddDeliveryAccount(dto);
             if (success)
             {
-                return Ok(new { message = "Delivery account added successfully." });
-
+                return Ok("Delivery account added successfully.");
             }
 
             return BadRequest("Could not add delivery account.");
@@ -56,42 +55,6 @@ namespace ShippingSystem.PL.Controllers
             }
 
             return BadRequest($"Could not delete delivery account with ID {id}.");
-        }
-
-
-
-
-        // Action to Get Delivery Account by ID
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetDeliveryAccountById(int id)
-        {
-            var account = await deliveryAccountService.GetDeliveryAccountById(id);
-            if (account == null)
-            {
-                return NotFound($"Delivery account with ID {id} not found.");
-            }
-
-            return Ok(account);
-        }
-
-
-
-        // Action to Update Delivery Account
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDeliveryAccount(int id, [FromBody] AddDeliveryAccountDTO dto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var success = await deliveryAccountService.UpdateDeliveryAccount(id, dto);
-            if (success)
-            {
-                return Ok($"Delivery account with ID {id} updated successfully.");
-            }
-
-            return NotFound($"Delivery account with ID {id} not found or update failed.");
         }
 
     }
